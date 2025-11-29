@@ -1,1125 +1,929 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Поиск коммерческих помещений</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .header {
-      background: white;
-      padding: 24px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .header h1 {
-      font-size: 28px;
-      color: #2c3e50;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      color: #7f8c8d;
-      font-size: 14px;
-    }
-
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .control-group {
-      background: white;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .control-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #34495e;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .control-group input,
-    .control-group select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid #ecf0f1;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .control-group input:focus,
-    .control-group select:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: #3498db;
-      color: white;
-      flex: 1;
-    }
-
-    .btn-primary:hover {
-      background: #2980b9;
-      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
-    }
-
-    .btn-success {
-      background: #27ae60;
-      color: white;
-      flex: 1;
-    }
-
-    .btn-success:hover {
-      background: #229954;
-      box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
-    }
-
-    .btn-secondary {
-      background: #95a5a6;
-      color: white;
-      flex: 1;
-    }
-
-    .btn-secondary:hover {
-      background: #7f8c8d;
-    }
-
-    .btn-danger {
-      background: #e74c3c;
-      color: white;
-      padding: 10px 16px;
-      font-size: 14px;
-    }
-
-    .btn-danger:hover {
-      background: #c0392b;
-    }
-
-    .btn-small {
-      padding: 6px 12px;
-      font-size: 12px;
-      background: #3498db;
-      color: white;
-    }
-
-    .btn-small:hover {
-      background: #2980b9;
-    }
-
-    .btn-remove {
-      padding: 8px 12px;
-      font-size: 12px;
-      background: #e74c3c;
-      color: white;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .btn-remove:hover {
-      background: #c0392b;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 16px;
-      color: white;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .card-header:hover {
-      opacity: 0.9;
-    }
-
-    .card-header h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
-      word-break: break-word;
-    }
-
-    .card-header p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
-    .card-body {
-      padding: 16px;
-    }
-
-    .card-field {
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #ecf0f1;
-    }
-
-    .card-field:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .card-field-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #7f8c8d;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    .card-field-value {
-      font-size: 14px;
-      color: #2c3e50;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .competitor-item {
-      background: #f8f9fa;
-      padding: 8px;
-      border-radius: 4px;
-      margin-bottom: 6px;
-      font-size: 13px;
-      line-height: 1.3;
-    }
-
-    .competitor-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .anchor-item {
-      background: #f0f7ff;
-      padding: 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      line-height: 1.4;
-      border-left: 3px solid #3498db;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .badge-danger {
-      background: #ffe5e5;
-      color: #c0392b;
-    }
-
-    .badge-success {
-      background: #d5f4e6;
-      color: #27ae60;
-    }
-
-    .badge-warning {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .badge-info {
-      background: #d6eaf8;
-      color: #2980b9;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      width: 90%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .modal-header {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #2c3e50;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #ecf0f1;
-    }
-
-    .modal-body {
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: #34495e;
-      margin-bottom: 6px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid #ecf0f1;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-
-    .competitors-list {
-      margin-bottom: 16px;
-    }
-
-    .competitor-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr auto;
-      gap: 8px;
-      margin-bottom: 8px;
-      align-items: end;
-    }
-
-    .competitor-row input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ecf0f1;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    .competitor-row input:focus {
-      outline: none;
-      border-color: #3498db;
-    }
-
-    .competitor-actions {
-      display: flex;
-      gap: 4px;
-    }
-
-    .anchor-toggle {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 12px;
-    }
-
-    .anchor-toggle label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0;
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .anchor-fields {
-      display: grid;
-      gap: 12px;
-    }
-
-    .anchor-fields > div {
-      display: grid;
-      gap: 4px;
-    }
-
-    .anchor-fields input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid #ecf0f1;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .modal-footer {
-      display: flex;
-      gap: 8px;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 2px solid #ecf0f1;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .empty-state-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .empty-state p {
-      color: #7f8c8d;
-      margin-bottom: 16px;
-    }
-
-    .link {
-      color: #3498db;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .link:hover {
-      color: #2980b9;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .competitor-row {
-        grid-template-columns: 1fr;
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-    <script>
-        window.places = []; 
-        window.isFirebaseReady = false;
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyCXU_qtA65zudpgUsdNdbndOSpuGRbEJ2c",
-          authDomain: "pharmacy-manager-d7802.firebaseapp.com",
-          projectId: "pharmacy-manager-d7802",
-          storageBucket: "pharmacy-manager-d7802.firebasestorage.app",
-          messagingSenderId: "60028648458",
-          appId: "1:60028648458:web:45e2a124ea3b7d7c46f3f3",
-        };
-
-        try {
-            firebase.initializeApp(firebaseConfig);
-            var db = firebase.firestore();
-        } catch(e) { console.error("Firebase Init Fail", e); }
-
-        const DOC_REF = db.collection("pharmacy_app").doc("search_premises");
-
-        function setStatus(msg, color) {
-            let el = document.getElementById('syncStatus');
-            if (!el) {
-                // Try to inject
-                const header = document.querySelector('h2');
-                if(header) {
-                     const div = document.createElement('div');
-                     div.innerHTML = '<span id="syncStatus" style="float:right; font-size:16px; cursor:help;"></span>';
-                     header.parentNode.insertBefore(div, header);
-                     el = div.querySelector('#syncStatus');
-                }
-            }
-            if(!el) return;
-
-            let icon = '🔄';
-            if (msg.includes('загружены') || msg.includes('Синхронизировано')) icon = '✅';
-            else if (msg.includes('Ошибка')) icon = '❌';
-            else if (msg.includes('Сохранение')) icon = '⏳';
-            el.innerHTML = icon;
-            el.title = msg;
-        }
-
-        window.saveToFirebase = function() {
-            if (!window.isFirebaseReady) return;
-            setStatus("Сохранение...", "orange");
-            const data = { places: window.places || [] };
-            DOC_REF.set(data, { merge: true })
-            .then(() => setStatus("Синхронизировано", "green"))
-            .catch((err) => { setStatus("Ошибка сохранения", "red"); console.error(err); });
-        };
-
-        window.initFirebaseSync = function() {
-            setStatus("Подключение...", "blue");
-            DOC_REF.onSnapshot((doc) => {
-                window.isFirebaseReady = true;
-                if (doc.exists) {
-                    const data = doc.data();
-                    window.places = data.places || [];
-                    setStatus("Данные загружены", "green");
-                } else {
-                    setStatus("База пуста", "gray");
-                }
-                if (typeof renderPlaces === 'function') renderPlaces();
-            });
-        };
-    </script>
-
-<script>window.addEventListener('DOMContentLoaded', initFirebaseSync);</script>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-    <script>
-        window.places = []; 
-        window.isFirebaseReady = false;
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyCXU_qtA65zudpgUsdNdbndOSpuGRbEJ2c",
-          authDomain: "pharmacy-manager-d7802.firebaseapp.com",
-          projectId: "pharmacy-manager-d7802",
-          storageBucket: "pharmacy-manager-d7802.firebasestorage.app",
-          messagingSenderId: "60028648458",
-          appId: "1:60028648458:web:45e2a124ea3b7d7c46f3f3",
-        };
-
-        try {
-            firebase.initializeApp(firebaseConfig);
-            var db = firebase.firestore();
-        } catch(e) { console.error("Firebase Init Fail", e); }
-
-        const DOC_REF = db.collection("pharmacy_app").doc("search_premises");
-
-        function setStatus(msg, color) {
-            let el = document.getElementById('syncStatus');
-            if (!el) {
-                const header = document.querySelector('h2');
-                if(header) {
-                     const div = document.createElement('div');
-                     div.innerHTML = '<span id="syncStatus" style="float:right; font-size:16px; cursor:help;"></span>';
-                     header.parentNode.insertBefore(div, header);
-                     el = div.querySelector('#syncStatus');
-                }
-            }
-            if(!el) return;
-
-            let icon = '🔄';
-            if (msg.includes('загружены') || msg.includes('Синхронизировано')) icon = '✅';
-            else if (msg.includes('Ошибка')) icon = '❌';
-            else if (msg.includes('Сохранение')) icon = '⏳';
-            el.innerHTML = icon;
-            el.title = msg;
-        }
-
-        window.saveToFirebase = function() {
-            if (!window.isFirebaseReady) return;
-            setStatus("Сохранение...", "orange");
-            const data = { places: window.places || [] };
-            DOC_REF.set(data, { merge: true })
-            .then(() => setStatus("Синхронизировано", "green"))
-            .catch((err) => { setStatus("Ошибка сохранения", "red"); console.error(err); });
-        };
-
-        window.initFirebaseSync = function() {
-            setStatus("Подключение...", "blue");
-            DOC_REF.onSnapshot((doc) => {
-                window.isFirebaseReady = true;
-                if (doc.exists) {
-                    const data = doc.data();
-                    window.places = data.places || [];
-                    setStatus("Данные загружены", "green");
-                } else {
-                    setStatus("База пуста", "gray");
-                }
-
-                // FORCE FILTER "В работе"
-                const filterEl = document.getElementById('filterDecision');
-                if(filterEl && !window.initFilterDone) {
-                    filterEl.value = "В работе";
-                    window.initFilterDone = true;
-                }
-
-                // CALL RENDER WITHOUT ARGS to force DOM reading
-                if (typeof renderPlaces === 'function') renderPlaces();
-            });
-        };
-    </script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поиск коммерческих помещений</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+min-height: 100vh;
+padding: 20px;
+}
+.container {
+max-width: 1200px;
+margin: 0 auto;
+}
+.header {
+background: white;
+padding: 24px;
+border-radius: 12px;
+margin-bottom: 24px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.header h1 {
+font-size: 28px;
+color: #2c3e50;
+margin-bottom: 8px;
+}
+.header p {
+color: #7f8c8d;
+font-size: 14px;
+}
+.controls {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 12px;
+margin-bottom: 24px;
+}
+.control-group {
+background: white;
+padding: 16px;
+border-radius: 8px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.control-group label {
+display: block;
+font-size: 12px;
+font-weight: 600;
+color: #34495e;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+.control-group input,
+.control-group select {
+width: 100%;
+padding: 10px 12px;
+border: 2px solid #ecf0f1;
+border-radius: 6px;
+font-size: 14px;
+font-family: inherit;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.control-group input:focus,
+.control-group select:focus {
+outline: none;
+border-color: #3498db;
+box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.btn-group {
+display: flex;
+gap: 8px;
+}
+.btn {
+padding: 10px 16px;
+border: none;
+border-radius: 6px;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+.btn-primary {
+background: #3498db;
+color: white;
+flex: 1;
+}
+.btn-primary:hover {
+background: #2980b9;
+box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+.btn-success {
+background: #27ae60;
+color: white;
+flex: 1;
+}
+.btn-success:hover {
+background: #229954;
+box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+.btn-secondary {
+background: #95a5a6;
+color: white;
+flex: 1;
+}
+.btn-secondary:hover {
+background: #7f8c8d;
+}
+.btn-danger {
+background: #e74c3c;
+color: white;
+padding: 10px 16px;
+font-size: 14px;
+}
+.btn-danger:hover {
+background: #c0392b;
+}
+.btn-small {
+padding: 6px 12px;
+font-size: 12px;
+background: #3498db;
+color: white;
+}
+.btn-small:hover {
+background: #2980b9;
+}
+.btn-remove {
+padding: 8px 12px;
+font-size: 12px;
+background: #e74c3c;
+color: white;
+white-space: nowrap;
+flex-shrink: 0;
+}
+.btn-remove:hover {
+background: #c0392b;
+}
+.cards-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+gap: 16px;
+margin-bottom: 24px;
+}
+.card {
+background: white;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+transform: translateY(-4px);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.card-header {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+padding: 16px;
+color: white;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.card-header:hover {
+opacity: 0.9;
+}
+.card-header h3 {
+font-size: 16px;
+margin-bottom: 4px;
+word-break: break-word;
+}
+.card-header p {
+font-size: 12px;
+opacity: 0.9;
+}
+.card-body {
+padding: 16px;
+}
+.card-field {
+margin-bottom: 12px;
+padding-bottom: 12px;
+border-bottom: 1px solid #ecf0f1;
+}
+.card-field:last-child {
+border-bottom: none;
+margin-bottom: 0;
+padding-bottom: 0;
+}
+.card-field-label {
+font-size: 11px;
+font-weight: 600;
+color: #7f8c8d;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-bottom: 4px;
+}
+.card-field-value {
+font-size: 14px;
+color: #2c3e50;
+line-height: 1.4;
+word-break: break-word;
+}
+.competitor-item {
+background: #f8f9fa;
+padding: 8px;
+border-radius: 4px;
+margin-bottom: 6px;
+font-size: 13px;
+line-height: 1.3;
+}
+.competitor-item:last-child {
+margin-bottom: 0;
+}
+.anchor-item {
+background: #f0f7ff;
+padding: 10px;
+border-radius: 4px;
+font-size: 13px;
+line-height: 1.4;
+border-left: 3px solid #3498db;
+}
+.badge {
+display: inline-block;
+padding: 4px 8px;
+border-radius: 4px;
+font-size: 12px;
+font-weight: 600;
+margin-bottom: 8px;
+}
+.badge-danger {
+background: #ffe5e5;
+color: #c0392b;
+}
+.badge-success {
+background: #d5f4e6;
+color: #27ae60;
+}
+.badge-warning {
+background: #fff3cd;
+color: #856404;
+}
+.badge-info {
+background: #d6eaf8;
+color: #2980b9;
+}
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+align-items: center;
+justify-content: center;
+}
+.modal.active {
+display: flex;
+}
+.modal-content {
+background: white;
+border-radius: 12px;
+padding: 24px;
+width: 90%;
+max-width: 600px;
+max-height: 90vh;
+overflow-y: auto;
+box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+.modal-header {
+font-size: 20px;
+font-weight: 600;
+margin-bottom: 20px;
+color: #2c3e50;
+padding-bottom: 12px;
+border-bottom: 2px solid #ecf0f1;
+}
+.modal-body {
+margin-bottom: 20px;
+}
+.form-group {
+margin-bottom: 16px;
+}
+.form-group label {
+display: block;
+font-size: 13px;
+font-weight: 600;
+color: #34495e;
+margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+width: 100%;
+padding: 10px 12px;
+border: 2px solid #ecf0f1;
+border-radius: 6px;
+font-size: 14px;
+font-family: inherit;
+transition: border-color 0.2s;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+outline: none;
+border-color: #3498db;
+box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.competitors-list {
+margin-bottom: 16px;
+}
+.competitor-row {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr auto;
+gap: 8px;
+margin-bottom: 8px;
+align-items: end;
+}
+.competitor-row input {
+width: 100%;
+padding: 8px;
+border: 1px solid #ecf0f1;
+border-radius: 4px;
+font-size: 12px;
+}
+.competitor-row input:focus {
+outline: none;
+border-color: #3498db;
+}
+.competitor-actions {
+display: flex;
+gap: 4px;
+}
+.anchor-toggle {
+display: flex;
+gap: 16px;
+margin-bottom: 12px;
+}
+.anchor-toggle label {
+display: flex;
+align-items: center;
+gap: 6px;
+margin: 0;
+font-size: 14px;
+font-weight: 400;
+}
+.anchor-fields {
+display: grid;
+gap: 12px;
+}
+.anchor-fields > div {
+display: grid;
+gap: 4px;
+}
+.anchor-fields input {
+width: 100%;
+padding: 10px 12px;
+border: 2px solid #ecf0f1;
+border-radius: 6px;
+font-size: 14px;
+}
+.modal-footer {
+display: flex;
+gap: 8px;
+margin-top: 20px;
+padding-top: 20px;
+border-top: 2px solid #ecf0f1;
+}
+.empty-state {
+text-align: center;
+padding: 40px 20px;
+}
+.empty-state-icon {
+font-size: 48px;
+margin-bottom: 16px;
+}
+.empty-state p {
+color: #7f8c8d;
+margin-bottom: 16px;
+}
+.link {
+color: #3498db;
+text-decoration: none;
+transition: color 0.2s;
+}
+.link:hover {
+color: #2980b9;
+text-decoration: underline;
+}
+@media (max-width: 768px) {
+.cards-grid {
+grid-template-columns: 1fr;
+}
+.competitor-row {
+grid-template-columns: 1fr;
+}
+.controls {
+grid-template-columns: 1fr;
+}
+}
+</style>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+window.places = [];
+window.isFirebaseReady = false;
+const firebaseConfig = {
+apiKey: "AIzaSyCXU_qtA65zudpgUsdNdbndOSpuGRbEJ2c",
+authDomain: "pharmacy-manager-d7802.firebaseapp.com",
+projectId: "pharmacy-manager-d7802",
+storageBucket: "pharmacy-manager-d7802.firebasestorage.app",
+messagingSenderId: "60028648458",
+appId: "1:60028648458:web:45e2a124ea3b7d7c46f3f3",
+};
+try {
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+} catch(e) { console.error("Firebase Init Fail", e); }
+const DOC_REF = db.collection("pharmacy_app").doc("search_premises");
+function setStatus(msg, color) {
+let el = document.getElementById('syncStatus');
+if (!el) {
+const header = document.querySelector('h2');
+if(header) {
+const div = document.createElement('div');
+div.innerHTML = '<span id="syncStatus" style="float:right; font-size:16px; cursor:help;"></span>';
+header.parentNode.insertBefore(div, header);
+el = div.querySelector('#syncStatus');
+}
+}
+if(!el) return;
+let icon = '🔄';
+if (msg.includes('загружены') || msg.includes('Синхронизировано')) icon = '✅';
+else if (msg.includes('Ошибка')) icon = '❌';
+else if (msg.includes('Сохранение')) icon = '⏳';
+el.innerHTML = icon;
+el.title = msg;
+}
+window.saveToFirebase = function() {
+if (!window.isFirebaseReady) return;
+setStatus("Сохранение...", "orange");
+const data = { places: window.places || [] };
+DOC_REF.set(data, { merge: true })
+.then(() => setStatus("Синхронизировано", "green"))
+.catch((err) => { setStatus("Ошибка сохранения", "red"); console.error(err); });
+};
+window.initFirebaseSync = function() {
+setStatus("Подключение...", "blue");
+DOC_REF.onSnapshot((doc) => {
+window.isFirebaseReady = true;
+if (doc.exists) {
+const data = doc.data();
+window.places = data.places || [];
+setStatus("Данные загружены", "green");
+} else {
+setStatus("База пуста", "gray");
+}
+if (typeof renderPlaces === 'function') renderPlaces();
+});
+};
+</script>
 <script>window.addEventListener('DOMContentLoaded', initFirebaseSync);</script>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 <div style="text-align: right; margin-bottom: 5px; height:20px;"><span id="syncStatus"></span></div>
-<div style="text-align: right; margin-bottom: 5px; height:20px;"><span id="syncStatus"></span></div>
-    <div class="header">
-      <h1>🏢 Поиск коммерческих помещений</h1>
-      <p>Управление и мониторинг доступных помещений для открытия аптек</p>
-    </div>
-
-    <div class="controls">
-      <div class="control-group">
-        <label>Поиск по адресу</label>
-        <input type="text" id="searchAddress" placeholder="Введите адрес..." onkeyup="applyFilters()">
-      </div>
-      <div class="control-group">
-        <label>Фильтр по району</label>
-        <select id="filterDistrict" onchange="applyFilters()">
-          <option value="">Все районы</option>
-          <option value="Ленинский">Ленинский</option>
-          <option value="Сормовский">Сормовский</option>
-          <option value="Канавинский">Канавинский</option>
-          <option value="Советский">Советский</option>
-          <option value="Приокский">Приокский</option>
-          <option value="Нижегородский">Нижегородский</option>
-          <option value="Автозаводский">Автозаводский</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Фильтр по решению</label>
-        <select id="filterDecision" onchange="applyFilters()">
-          <option value="">Все</option>
-          <option value="Подходит">✓ Подходит</option>
-          <option value="В работе" selected>⟳ В работе</option>
-          <option value="Не подходит">✗ Не подходит</option>
-        </select>
-      </div>
-      <div class="control-group" style="display: flex; gap: 8px; align-items: flex-end;">
-        <button class="btn btn-primary" onclick="openAddModal()" style="flex: 1;">+ Добавить помещение</button>
-        <button class="btn btn-secondary" onclick="clearFilters()">Очистить</button>
-      </div>
-    </div>
-
-    <div class="cards-grid" id="cardsContainer"></div>
-  </div>
-
-  <div class="modal" id="addModal">
-    <div class="modal-content">
-      <div class="modal-header">Добавить помещение</div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Адрес *</label>
-          <input type="text" id="formAddress" placeholder="ул. Примерная, 123">
-        </div>
-        <div class="form-group">
-          <label>Район *</label>
-          <select id="formDistrict">
-            <option value="">Выберите район</option>
-            <option value="Ленинский">Ленинский</option>
-            <option value="Сормовский">Сормовский</option>
-            <option value="Канавинский">Канавинский</option>
-            <option value="Советский">Советский</option>
-            <option value="Приокский">Приокский</option>
-            <option value="Нижегородский">Нижегородский</option>
-            <option value="Автозаводский">Автозаводский</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ссылка</label>
-          <input type="url" id="formLink" placeholder="https://...">
-        </div>
-
-        <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin: 16px 0;">
-          <label style="font-weight: 600; color: #34495e; margin-bottom: 12px; display: block;">Конкуренты</label>
-          <button class="btn btn-small" onclick="addCompetitorField()">+ Добавить</button>
-          <div id="competitorsList" class="competitors-list"></div>
-        </div>
-
-        <div class="anchor-section">
-          <label style="font-weight: 600; color: #34495e; margin-bottom: 12px; display: block;">Якорь (крупная торговая сеть)</label>
-          <div class="anchor-toggle">
-            <label>
-              <input type="radio" name="anchorType" value="no" onchange="updateAnchorFields()" checked> Нет
-            </label>
-            <label>
-              <input type="radio" name="anchorType" value="yes" onchange="updateAnchorFields()"> Да
-            </label>
-          </div>
-          <div id="anchorFieldsContainer" style="display: none;">
-            <div class="anchor-fields">
-              <div>
-                <label style="font-size: 12px; margin-bottom: 4px; display: block;">Название якоря</label>
-                <input type="text" id="formAnchorName" placeholder="Название сети">
-              </div>
-              <div>
-                <label style="font-size: 12px; margin-bottom: 4px; display: block;">Проходимость (чеки)</label>
-                <input type="text" id="formAnchorTraffic" placeholder="5000">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Арендодатель - Контактное лицо</label>
-          <input type="text" id="formLandlordContact" placeholder="ФИО контактного лица">
-        </div>
-        <div class="form-group">
-          <label>Email арендодателя</label>
-          <input type="email" id="formLandlordEmail" placeholder="email@example.com">
-        </div>
-        <div class="form-group">
-          <label>Номер телефона</label>
-          <input type="tel" id="formLandlordPhone" placeholder="+7 (999) 123-45-67">
-        </div>
-        <div class="form-group">
-          <label>Площадь (м²)</label>
-          <input type="text" id="formArea" placeholder="50,0">
-        </div>
-        <div class="form-group">
-          <label>Аренда (₽)</label>
-          <input type="text" id="formRent" placeholder="50 000">
-        </div>
-        <div class="form-group">
-          <label>Примечания</label>
-          <textarea id="formNotes" placeholder="Дополнительная информация..." rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Решение</label>
-          <select id="formDecision">
-            <option value="Не подходит">✗ Не подходит</option>
-            <option value="В работе" selected>⟳ В работе</option>
-            <option value="Подходит">✓ Подходит</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success" onclick="savePlace()">Сохранить</button>
-        <button class="btn btn-secondary" onclick="closeAddModal()">Отмена</button>
-        <button class="btn btn-danger" id="deleteBtn" onclick="deletePlace()" style="display: none; margin-left: auto;">Удалить</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let competitors = [];
-    let editingId = null;
-
-    window.places = null || [
-      {
-        id: 1,
-        address: "ул. Левобережная, 3",
-        district: "Ленинский",
-        link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/torgovaya_ploschad_32_6_7576672665",
-        competitors: [
-          { address: "ул. Береговая, 5", name: "Максавит", distance: "0,2 км", traffic: "1200" },
-          { address: "ул. Береговая, 10", name: "Аптечество", distance: "0,2 км", traffic: "850" }
-        ],
-        area: "32,6",
-        rent: "65 200",
-        anchor: null,
-        notes: "Спальный микрорайон 'Аквамарин' (8 многоэтажных домов, население около 4000 человек). Съезд действующего арендатора с уведомлением за 60 дней.",
-        decision: "В работе"
-      },
-      {
-        id: 2,
-        address: "ул. Достоевского, 15",
-        district: "Сормовский",
-        link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/svobodnogo_naznacheniya_40_2163527271",
-        competitors: [
-          { address: "ул. Достоевского, 20", name: "Аптечество", distance: "0,4 км", traffic: "950" }
-        ],
-        area: "70,0",
-        rent: "80 000",
-        anchor: { name: "Пятёрочка", traffic: "3500" },
-        notes: "ЖК 'Удачный-2' (3 многоэтажных дома)",
-        decision: "В работе"
-      },
-      {
-        id: 3,
-        address: "ул. Путейская 30",
-        district: "Канавинский",
-        link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/obekt_1617017_7329288868",
-        competitors: [],
-        area: "65,0",
-        rent: "50 000",
-        anchor: null,
-        notes: "При Пятёрочке. В радиусе 900 м только одна частная аптека",
-        decision: "В работе"
-      }
-    ];
-
-    function savePlaces() {
-      saveToFirebase();
-    }
-
-    function getDecisionBadge(decision) {
-      switch(decision) {
-        case 'Подходит':
-          return '<span class="badge badge-success">✓ Подходит</span>';
-        case 'В работе':
-          return '<span class="badge badge-warning">⟳ В работе</span>';
-        case 'Не подходит':
-          return '<span class="badge badge-danger">✗ Не подходит</span>';
-        default:
-          return '<span class="badge badge-info">Без решения</span>';
-      }
-    }
-
-    function renderCompetitors(competitorsList) {
-      if (!competitorsList || competitorsList.length === 0) {
-        return '<div class="card-field-value">-</div>';
-      }
-      return competitorsList.map(c => 
-        `<div class="competitor-item">
-          ${c.address ? `<div><small>${c.address}</small></div>` : ''}
-          <strong>${c.name}</strong> ${c.distance || ''}<br>
-          <small>Проходимость: ${c.traffic || '-'} чеков</small>
-        </div>`
-      ).join('');
-    }
-
-    function renderPlaces(filter = {}) {
-        // PATCH: Read from DOM if filter is empty or partial
-        if (!filter.decision && document.getElementById('filterDecision')) {
-            filter.decision = document.getElementById('filterDecision').value;
-        }
-        if (!filter.district && document.getElementById('filterDistrict')) {
-            filter.district = document.getElementById('filterDistrict').value;
-        }
-    
-      const container = document.getElementById('cardsContainer');
-      let filtered = places;
-
-      if (filter.address) {
-        const addr = filter.address.toLowerCase();
-        filtered = filtered.filter(p => p.address.toLowerCase().includes(addr));
-      }
-
-      if (filter.district && filter.district !== '') {
-        filtered = filtered.filter(p => p.district === filter.district);
-      }
-
-      if (filter.decision && filter.decision !== '') {
-        filtered = filtered.filter(p => p.decision === filter.decision);
-      }
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state" style="grid-column: 1 / -1;">
-            <div class="empty-state-icon">📭</div>
-            <p>Помещения не найдены</p>
-            <button class="btn btn-primary" onclick="openAddModal()">Добавить первое помещение</button>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = filtered.map(place => `
-        <div class="card">
-          <div class="card-header" onclick="editPlace(${place.id})">
-            <h3>${place.address}</h3>
-            <p>${place.district} район</p>
-          </div>
-          <div class="card-body">
-            <div style="margin-bottom: 12px;">
-              ${getDecisionBadge(place.decision)}
-              <span class="badge badge-info">${place.area} м²</span>
-              <span class="badge badge-info">${place.rent} ₽</span>
-            </div>
-
-            <div class="card-field">
-              <div class="card-field-label">Конкуренты</div>
-              ${renderCompetitors(place.competitors)}
-            </div>
-
-            ${place.anchor ? `
-              <div class="card-field">
-                <div class="card-field-label">Якорь</div>
-                <div class="anchor-item">
-                  <strong>${place.anchor.name}</strong><br>
-                  ${place.anchor.traffic ? `<small>Проходимость: ${place.anchor.traffic} чеков</small>` : ''}
-                </div>
-              </div>
-            ` : ''}
-
-            ${place.link ? `
-              <div class="card-field">
-                <div class="card-field-label">Ссылка</div>
-                <div class="card-field-value">
-                  <a href="${place.link}" target="_blank" rel="noopener" class="link">Открыть →</a>
-                </div>
-              </div>
-            ` : ''}
-
-            ${(place.landlordContact || place.landlordEmail || place.landlordPhone) ? `
-              <div class="card-field">
-                <div class="card-field-label">Арендодатель</div>
-                <div class="card-field-value">
-                  ${place.landlordContact ? `<div><strong>Контакт:</strong> ${place.landlordContact}</div>` : ''}
-                  ${place.landlordEmail ? `<div><strong>Email:</strong> <a href="mailto:${place.landlordEmail}">${place.landlordEmail}</a></div>` : ''}
-                  ${place.landlordPhone ? `<div><strong>Тел:</strong> <a href="tel:${place.landlordPhone}">${place.landlordPhone}</a></div>` : ''}
-                </div>
-              </div>
-            ` : ''}
-
-            ${place.notes ? `
-              <div class="card-field">
-                <div class="card-field-label">Примечания</div>
-                <div class="card-field-value">${place.notes}</div>
-              </div>
-            ` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderCompetitorsForm() {
-      const list = document.getElementById('competitorsList');
-      list.innerHTML = competitors.map((comp, idx) => `
-        <div class="competitor-row">
-          <input type="text" placeholder="Адрес аптеки" value="${comp.address || ''}" 
-            onchange="competitors[${idx}].address = this.value">
-          <input type="text" placeholder="Название" value="${comp.name}" 
-            onchange="competitors[${idx}].name = this.value">
-          <input type="text" placeholder="Расстояние" value="${comp.distance}" 
-            onchange="competitors[${idx}].distance = this.value">
-          <input type="text" placeholder="Проходимость (чеки)" value="${comp.traffic}" 
-            onchange="competitors[${idx}].traffic = this.value">
-          <div class="competitor-actions">
-            <button class="btn btn-remove" onclick="removeCompetitor(${idx})">✕</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function addCompetitorField() {
-      competitors.push({ address: '', name: '', distance: '', traffic: '' });
-      renderCompetitorsForm();
-    }
-
-    function removeCompetitor(idx) {
-      competitors.splice(idx, 1);
-      renderCompetitorsForm();
-    }
-
-    function updateAnchorFields() {
-      const isYes = document.querySelector('input[name="anchorType"]:checked').value === 'yes';
-      document.getElementById('anchorFieldsContainer').style.display = isYes ? 'block' : 'none';
-    }
-
-    function openAddModal() {
-      editingId = null;
-      competitors = [];
-      document.getElementById('deleteBtn').style.display = 'none';
-      document.getElementById('addModal').querySelector('.modal-header').textContent = 'Добавить помещение';
-      document.getElementById('formAddress').value = '';
-      document.getElementById('formDistrict').value = '';
-      document.getElementById('formLink').value = '';
-      document.getElementById('formArea').value = '';
-      document.getElementById('formRent').value = '';
-      document.getElementById('formNotes').value = '';
-      document.getElementById('formDecision').value = 'В работе';
-      document.getElementById('formLandlordContact').value = '';
-      document.getElementById('formLandlordEmail').value = '';
-      document.getElementById('formLandlordPhone').value = '';
-      document.querySelector('input[name="anchorType"][value="no"]').checked = true;
-      document.getElementById('formAnchorName').value = '';
-      document.getElementById('formAnchorTraffic').value = '';
-      updateAnchorFields();
-      renderCompetitorsForm();
-      document.getElementById('addModal').classList.add('active');
-    }
-
-    function editPlace(id) {
-      const place = places.find(p => p.id === id);
-      if (!place) return;
-
-      editingId = id;
-      competitors = JSON.parse(JSON.stringify(place.competitors || []));
-      document.getElementById('deleteBtn').style.display = 'block';
-      document.getElementById('addModal').querySelector('.modal-header').textContent = 'Редактировать помещение';
-      document.getElementById('formAddress').value = place.address;
-      document.getElementById('formDistrict').value = place.district;
-      document.getElementById('formLink').value = place.link;
-      document.getElementById('formArea').value = place.area;
-      document.getElementById('formRent').value = place.rent;
-      document.getElementById('formNotes').value = place.notes;
-      document.getElementById('formDecision').value = place.decision;
-      document.getElementById('formLandlordContact').value = place.landlordContact || '';
-      document.getElementById('formLandlordEmail').value = place.landlordEmail || '';
-      document.getElementById('formLandlordPhone').value = place.landlordPhone || '';
-      
-      if (place.anchor) {
-        document.querySelector('input[name="anchorType"][value="yes"]').checked = true;
-        document.getElementById('formAnchorName').value = place.anchor.name;
-        document.getElementById('formAnchorTraffic').value = place.anchor.traffic || '';
-      } else {
-        document.querySelector('input[name="anchorType"][value="no"]').checked = true;
-      }
-      
-      updateAnchorFields();
-      renderCompetitorsForm();
-      document.getElementById('addModal').classList.add('active');
-    }
-
-    function closeAddModal() {
-      document.getElementById('addModal').classList.remove('active');
-      editingId = null;
-      competitors = [];
-    }
-
-    function savePlace() {
-      const address = document.getElementById('formAddress').value.trim();
-      const district = document.getElementById('formDistrict').value;
-
-      if (!address || !district) {
-        alert('Заполните обязательные поля: адрес и район');
-        return;
-      }
-
-      const hasAnchor = document.querySelector('input[name="anchorType"]:checked').value === 'yes';
-      let anchor = null;
-      if (hasAnchor) {
-        const anchorName = document.getElementById('formAnchorName').value.trim();
-        const anchorTraffic = document.getElementById('formAnchorTraffic').value.trim();
-        if (anchorName) {
-          anchor = { name: anchorName, traffic: anchorTraffic || '' };
-        }
-      }
-
-      const place = {
-        address,
-        district,
-        link: document.getElementById('formLink').value.trim(),
-        competitors: competitors.filter(c => c.name.trim() !== ''),
-        area: document.getElementById('formArea').value.trim(),
-        rent: document.getElementById('formRent').value.trim(),
-        anchor: anchor,
-        notes: document.getElementById('formNotes').value.trim(),
-        decision: document.getElementById('formDecision').value,
-        landlordContact: document.getElementById('formLandlordContact').value.trim(),
-        landlordEmail: document.getElementById('formLandlordEmail').value.trim(),
-        landlordPhone: document.getElementById('formLandlordPhone').value.trim()
-      };
-
-      if (editingId) {
-        const index = places.findIndex(p => p.id === editingId);
-        if (index !== -1) {
-          places[index] = { ...places[index], ...place };
-        }
-      } else {
-        place.id = Math.max(...places.map(p => p.id), 0) + 1;
-        places.push(place);
-      }
-
-      savePlaces();
-      renderPlaces(getFilter());
-      closeAddModal();
-    }
-
-    function deletePlace() {
-      if (confirm('Вы уверены, что хотите удалить это помещение?')) {
-        places = places.filter(p => p.id !== editingId);
-        savePlaces();
-        renderPlaces(getFilter());
-        closeAddModal();
-      }
-    }
-
-    function getFilter() {
-      return {
-        address: document.getElementById('searchAddress').value,
-        district: document.getElementById('filterDistrict').value,
-        decision: document.getElementById('filterDecision').value
-      };
-    }
-
-    function applyFilters() {
-      renderPlaces(getFilter());
-    }
-
-    function clearFilters() {
-      document.getElementById('searchAddress').value = '';
-      document.getElementById('filterDistrict').value = '';
-      document.getElementById('filterDecision').value = '';
-      renderPlaces(getFilter());
-    }
-
-    // Initial render
-    renderPlaces();
-  </script>
+<div class="header">
+<h1>🏢 Поиск коммерческих помещений</h1>
+<p>Управление и мониторинг доступных помещений для открытия аптек</p>
+</div>
+<div class="controls">
+<div class="control-group">
+<label>Поиск по адресу</label>
+<input type="text" id="searchAddress" placeholder="Введите адрес..." onkeyup="applyFilters()">
+</div>
+<div class="control-group">
+<label>Фильтр по району</label>
+<select id="filterDistrict" onchange="applyFilters()">
+<option value="">Все районы</option>
+<option value="Ленинский">Ленинский</option>
+<option value="Сормовский">Сормовский</option>
+<option value="Канавинский">Канавинский</option>
+<option value="Советский">Советский</option>
+<option value="Приокский">Приокский</option>
+<option value="Нижегородский">Нижегородский</option>
+<option value="Автозаводский">Автозаводский</option>
+</select>
+</div>
+<div class="control-group">
+<label>Фильтр по решению</label>
+<select id="filterDecision" onchange="applyFilters()">
+<option value="">Все</option>
+<option value="Подходит">✓ Подходит</option>
+<option value="В работе" selected>⟳ В работе</option>
+<option value="Не подходит">✗ Не подходит</option>
+</select>
+</div>
+<div class="control-group" style="display: flex; gap: 8px; align-items: flex-end;">
+<button class="btn btn-primary" onclick="openAddModal()" style="flex: 1;">+ Добавить помещение</button>
+<button class="btn btn-secondary" onclick="clearFilters()">Очистить</button>
+</div>
+</div>
+<div class="cards-grid" id="cardsContainer"></div>
+</div>
+<div class="modal" id="addModal">
+<div class="modal-content">
+<div class="modal-header">Добавить помещение</div>
+<div class="modal-body">
+<div class="form-group">
+<label>Адрес *</label>
+<input type="text" id="formAddress" placeholder="ул. Примерная, 123">
+</div>
+<div class="form-group">
+<label>Район *</label>
+<select id="formDistrict">
+<option value="">Выберите район</option>
+<option value="Ленинский">Ленинский</option>
+<option value="Сормовский">Сормовский</option>
+<option value="Канавинский">Канавинский</option>
+<option value="Советский">Советский</option>
+<option value="Приокский">Приокский</option>
+<option value="Нижегородский">Нижегородский</option>
+<option value="Автозаводский">Автозаводский</option>
+</select>
+</div>
+<div class="form-group">
+<label>Ссылка</label>
+<input type="url" id="formLink" placeholder="https://...">
+</div>
+<div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin: 16px 0;">
+<label style="font-weight: 600; color: #34495e; margin-bottom: 12px; display: block;">Конкуренты</label>
+<button class="btn btn-small" onclick="addCompetitorField()">+ Добавить</button>
+<div id="competitorsList" class="competitors-list"></div>
+</div>
+<div class="anchor-section">
+<label style="font-weight: 600; color: #34495e; margin-bottom: 12px; display: block;">Якорь (крупная торговая сеть)</label>
+<div class="anchor-toggle">
+<label>
+<input type="radio" name="anchorType" value="no" onchange="updateAnchorFields()" checked> Нет
+</label>
+<label>
+<input type="radio" name="anchorType" value="yes" onchange="updateAnchorFields()"> Да
+</label>
+</div>
+<div id="anchorFieldsContainer" style="display: none;">
+<div class="anchor-fields">
+<div>
+<label style="font-size: 12px; margin-bottom: 4px; display: block;">Название якоря</label>
+<input type="text" id="formAnchorName" placeholder="Название сети">
+</div>
+<div>
+<label style="font-size: 12px; margin-bottom: 4px; display: block;">Проходимость (чеки)</label>
+<input type="text" id="formAnchorTraffic" inputmode="numeric" placeholder="5000">
+</div>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label>Арендодатель - Контактное лицо</label>
+<input type="text" id="formLandlordContact" placeholder="ФИО контактного лица">
+</div>
+<div class="form-group">
+<label>Email арендодателя</label>
+<input type="email" id="formLandlordEmail" placeholder="email@example.com">
+</div>
+<div class="form-group">
+<label>Номер телефона</label>
+<input type="tel" id="formLandlordPhone" placeholder="+7 (999) 123-45-67">
+</div>
+<div class="form-group">
+<label>Площадь (м²)</label>
+<input type="text" id="formArea" inputmode="numeric" placeholder="50,0">
+</div>
+<div class="form-group">
+<label>Аренда (₽)</label>
+<input type="text" id="formRent" inputmode="numeric" placeholder="50 000">
+</div>
+<div class="form-group">
+<label>Примечания</label>
+<textarea id="formNotes" placeholder="Дополнительная информация..." rows="3"></textarea>
+</div>
+<div class="form-group">
+<label>Решение</label>
+<select id="formDecision">
+<option value="Не подходит">✗ Не подходит</option>
+<option value="В работе" selected>⟳ В работе</option>
+<option value="Подходит">✓ Подходит</option>
+</select>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-success" onclick="savePlace()">Сохранить</button>
+<button class="btn btn-secondary" onclick="closeAddModal()">Отмена</button>
+<button class="btn btn-danger" id="deleteBtn" onclick="deletePlace()" style="display: none; margin-left: auto;">Удалить</button>
+</div>
+</div>
+</div>
+<script>
+let competitors = [];
+let editingId = null;
+window.places = null || [
+{
+id: 1,
+address: "ул. Левобережная, 3",
+district: "Ленинский",
+link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/torgovaya_ploschad_32_6_7576672665",
+competitors: [
+{ address: "ул. Береговая, 5", name: "Максавит", distance: "0,2 км", traffic: "1200" },
+{ address: "ул. Береговая, 10", name: "Аптечество", distance: "0,2 км", traffic: "850" }
+],
+area: "32,6",
+rent: "65 200",
+anchor: null,
+notes: "Спальный микрорайон 'Аквамарин' (8 многоэтажных домов, население около 4000 человек). Съезд действующего арендатора с уведомлением за 60 дней.",
+decision: "В работе"
+},
+{
+id: 2,
+address: "ул. Достоевского, 15",
+district: "Сормовский",
+link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/svobodnogo_naznacheniya_40_2163527271",
+competitors: [
+{ address: "ул. Достоевского, 20", name: "Аптечество", distance: "0,4 км", traffic: "950" }
+],
+area: "70,0",
+rent: "80 000",
+anchor: { name: "Пятёрочка", traffic: "3500" },
+notes: "ЖК 'Удачный-2' (3 многоэтажных дома)",
+decision: "В работе"
+},
+{
+id: 3,
+address: "ул. Путейская 30",
+district: "Канавинский",
+link: "https://www.avito.ru/nizhniy_novgorod/kommercheskaya_nedvizhimost/obekt_1617017_7329288868",
+competitors: [],
+area: "65,0",
+rent: "50 000",
+anchor: null,
+notes: "При Пятёрочке. В радиусе 900 м только одна частная аптека",
+decision: "В работе"
+}
+];
+function savePlaces() {
+saveToFirebase();
+}
+function getDecisionBadge(decision) {
+switch(decision) {
+case 'Подходит':
+return '<span class="badge badge-success">✓ Подходит</span>';
+case 'В работе':
+return '<span class="badge badge-warning">⟳ В работе</span>';
+case 'Не подходит':
+return '<span class="badge badge-danger">✗ Не подходит</span>';
+default:
+return '<span class="badge badge-info">Без решения</span>';
+}
+}
+function renderCompetitors(competitorsList) {
+if (!competitorsList || competitorsList.length === 0) {
+return '<div class="card-field-value">-</div>';
+}
+return competitorsList.map(c =>
+`<div class="competitor-item">
+${c.address ? `<div><small>${c.address}</small></div>` : ''}
+<strong>${c.name}</strong> ${c.distance ? c.distance + ' метров' : ''}<br>
+<small>Проходимость: ${c.traffic || '-'} чеков</small>
+</div>`
+).join('');
+}
+function renderPlaces(filter = {}) {
+if (!filter.decision && document.getElementById('filterDecision')) {
+filter.decision = document.getElementById('filterDecision').value;
+}
+if (!filter.district && document.getElementById('filterDistrict')) {
+filter.district = document.getElementById('filterDistrict').value;
+}
+const container = document.getElementById('cardsContainer');
+let filtered = places;
+if (filter.address) {
+const addr = filter.address.toLowerCase();
+filtered = filtered.filter(p => p.address.toLowerCase().includes(addr));
+}
+if (filter.district && filter.district !== '') {
+filtered = filtered.filter(p => p.district === filter.district);
+}
+if (filter.decision && filter.decision !== '') {
+filtered = filtered.filter(p => p.decision === filter.decision);
+}
+if (filtered.length === 0) {
+container.innerHTML = `
+<div class="empty-state" style="grid-column: 1 / -1;">
+<div class="empty-state-icon">📭</div>
+<p>Помещения не найдены</p>
+<button class="btn btn-primary" onclick="openAddModal()">Добавить первое помещение</button>
+</div>
+`;
+return;
+}
+container.innerHTML = filtered.map(place => `
+<div class="card">
+<div class="card-header" onclick="editPlace(${place.id})">
+<h3>${place.address}</h3>
+<p>${place.district} район</p>
+</div>
+<div class="card-body">
+<div style="margin-bottom: 12px;">
+${getDecisionBadge(place.decision)}
+<span class="badge badge-info">${place.area} м²</span>
+<span class="badge badge-info">${place.rent} ₽</span>
+</div>
+<div class="card-field">
+<div class="card-field-label">Конкуренты</div>
+${renderCompetitors(place.competitors)}
+</div>
+${place.anchor ? `
+<div class="card-field">
+<div class="card-field-label">Якорь</div>
+<div class="anchor-item">
+<strong>${place.anchor.name}</strong><br>
+${place.anchor.traffic ? `<small>Проходимость: ${place.anchor.traffic} чеков</small>` : ''}
+</div>
+</div>
+` : ''}
+${place.link ? `
+<div class="card-field">
+<div class="card-field-label">Ссылка</div>
+<div class="card-field-value">
+<a href="${place.link}" target="_blank" rel="noopener" class="link">Открыть →</a>
+</div>
+</div>
+` : ''}
+${(place.landlordContact || place.landlordEmail || place.landlordPhone) ? `
+<div class="card-field">
+<div class="card-field-label">Арендодатель</div>
+<div class="card-field-value">
+${place.landlordContact ? `<div><strong>Контакт:</strong> ${place.landlordContact}</div>` : ''}
+${place.landlordEmail ? `<div><strong>Email:</strong> <a href="mailto:${place.landlordEmail}">${place.landlordEmail}</a></div>` : ''}
+${place.landlordPhone ? `<div><strong>Тел:</strong> <a href="tel:${place.landlordPhone}">${place.landlordPhone}</a></div>` : ''}
+</div>
+</div>
+` : ''}
+${place.notes ? `
+<div class="card-field">
+<div class="card-field-label">Примечания</div>
+<div class="card-field-value">${place.notes}</div>
+</div>
+` : ''}
+</div>
+</div>
+`).join('');
+}
+function renderCompetitorsForm() {
+const list = document.getElementById('competitorsList');
+list.innerHTML = competitors.map((comp, idx) => `
+<div class="competitor-row">
+<input type="text" placeholder="Адрес аптеки" value="${comp.address || ''}"
+onchange="competitors[${idx}].address = this.value">
+<input type="text" placeholder="Название" value="${comp.name}"
+onchange="competitors[${idx}].name = this.value">
+<input type="text" placeholder="Расстояние" value="${comp.distance}"
+onchange="competitors[${idx}].distance = this.value">
+<input type="text" placeholder="Проходимость (чеки)" value="${comp.traffic}"
+onchange="competitors[${idx}].traffic = this.value">
+<div class="competitor-actions">
+<button class="btn btn-remove" onclick="removeCompetitor(${idx})">✕</button>
+</div>
+</div>
+`).join('');
+}
+function addCompetitorField() {
+competitors.push({ address: '', name: '', distance: '', traffic: '' });
+renderCompetitorsForm();
+}
+function removeCompetitor(idx) {
+competitors.splice(idx, 1);
+renderCompetitorsForm();
+}
+function updateAnchorFields() {
+const isYes = document.querySelector('input[name="anchorType"]:checked').value === 'yes';
+document.getElementById('anchorFieldsContainer').style.display = isYes ? 'block' : 'none';
+}
+function openAddModal() {
+editingId = null;
+competitors = [];
+document.getElementById('deleteBtn').style.display = 'none';
+document.getElementById('addModal').querySelector('.modal-header').textContent = 'Добавить помещение';
+document.getElementById('formAddress').value = '';
+document.getElementById('formDistrict').value = '';
+document.getElementById('formLink').value = '';
+document.getElementById('formArea').value = '';
+document.getElementById('formRent').value = '';
+document.getElementById('formNotes').value = '';
+document.getElementById('formDecision').value = 'В работе';
+document.getElementById('formLandlordContact').value = '';
+document.getElementById('formLandlordEmail').value = '';
+document.getElementById('formLandlordPhone').value = '';
+document.querySelector('input[name="anchorType"][value="no"]').checked = true;
+document.getElementById('formAnchorName').value = '';
+document.getElementById('formAnchorTraffic').value = '';
+updateAnchorFields();
+renderCompetitorsForm();
+document.getElementById('addModal').classList.add('active');
+}
+function editPlace(id) {
+const place = places.find(p => p.id === id);
+if (!place) return;
+editingId = id;
+competitors = JSON.parse(JSON.stringify(place.competitors || []));
+document.getElementById('deleteBtn').style.display = 'block';
+document.getElementById('addModal').querySelector('.modal-header').textContent = 'Редактировать помещение';
+document.getElementById('formAddress').value = place.address;
+document.getElementById('formDistrict').value = place.district;
+document.getElementById('formLink').value = place.link;
+document.getElementById('formArea').value = place.area;
+document.getElementById('formRent').value = place.rent;
+document.getElementById('formNotes').value = place.notes;
+document.getElementById('formDecision').value = place.decision;
+document.getElementById('formLandlordContact').value = place.landlordContact || '';
+document.getElementById('formLandlordEmail').value = place.landlordEmail || '';
+document.getElementById('formLandlordPhone').value = place.landlordPhone || '';
+if (place.anchor) {
+document.querySelector('input[name="anchorType"][value="yes"]').checked = true;
+document.getElementById('formAnchorName').value = place.anchor.name;
+document.getElementById('formAnchorTraffic').value = place.anchor.traffic || '';
+} else {
+document.querySelector('input[name="anchorType"][value="no"]').checked = true;
+}
+updateAnchorFields();
+renderCompetitorsForm();
+document.getElementById('addModal').classList.add('active');
+}
+function closeAddModal() {
+document.getElementById('addModal').classList.remove('active');
+editingId = null;
+competitors = [];
+}
+function formatRentInput(value) {
+let numbers = value.replace(/\D/g, '');
+return numbers.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+function savePlace() {
+const address = document.getElementById('formAddress').value.trim();
+const district = document.getElementById('formDistrict').value;
+if (!address || !district) {
+alert('Заполните обязательные поля: адрес и район');
+return;
+}
+const hasAnchor = document.querySelector('input[name="anchorType"]:checked').value === 'yes';
+let anchor = null;
+if (hasAnchor) {
+const anchorName = document.getElementById('formAnchorName').value.trim();
+const anchorTraffic = document.getElementById('formAnchorTraffic').value.trim();
+if (anchorName) {
+anchor = { name: anchorName, traffic: anchorTraffic || '' };
+}
+}
+const place = {
+address,
+district,
+link: document.getElementById('formLink').value.trim(),
+competitors: competitors.filter(c => c.name.trim() !== ''),
+area: document.getElementById('formArea').value.trim(),
+rent: document.getElementById('formRent').value.trim(),
+anchor: anchor,
+notes: document.getElementById('formNotes').value.trim(),
+decision: document.getElementById('formDecision').value,
+landlordContact: document.getElementById('formLandlordContact').value.trim(),
+landlordEmail: document.getElementById('formLandlordEmail').value.trim(),
+landlordPhone: document.getElementById('formLandlordPhone').value.trim()
+};
+if (editingId) {
+const index = places.findIndex(p => p.id === editingId);
+if (index !== -1) {
+places[index] = { ...places[index], ...place };
+}
+} else {
+place.id = Math.max(...places.map(p => p.id), 0) + 1;
+places.push(place);
+}
+savePlaces();
+renderPlaces(getFilter());
+closeAddModal();
+}
+function deletePlace() {
+if (confirm('Вы уверены, что хотите удалить это помещение?')) {
+places = places.filter(p => p.id !== editingId);
+savePlaces();
+renderPlaces(getFilter());
+closeAddModal();
+}
+}
+function getFilter() {
+return {
+address: document.getElementById('searchAddress').value,
+district: document.getElementById('filterDistrict').value,
+decision: document.getElementById('filterDecision').value
+};
+}
+function applyFilters() {
+renderPlaces(getFilter());
+}
+function clearFilters() {
+document.getElementById('searchAddress').value = '';
+document.getElementById('filterDistrict').value = '';
+document.getElementById('filterDecision').value = '';
+renderPlaces(getFilter());
+}
+// Форматирование поля Аренда при вводе
+document.addEventListener('DOMContentLoaded', function() {
+const rentInput = document.getElementById('formRent');
+if (rentInput) {
+rentInput.addEventListener('input', function(e) {
+e.target.value = formatRentInput(e.target.value);
+});
+}
+});
+// Initial render
+renderPlaces();
+</script>
 </body>
 </html>
