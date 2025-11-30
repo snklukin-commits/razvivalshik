@@ -2,252 +2,268 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Аптечная сеть "Алоэ" | Панель управления</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-:root {
---primary-green: #8DC63F;
---dark-green: #009245;
---bg-color: #f4f9f5;
---text-color: #333;
---card-bg: #ffffff;
---shadow: 0 4px 15px rgba(0, 146, 69, 0.1);
---shadow-hover: 0 8px 25px rgba(0, 146, 69, 0.2);
-}
-* {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
-body {
-font-family: 'Roboto', sans-serif;
-background-color: var(--bg-color);
-color: var(--text-color);
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 40px 20px;
-}
-header {
-text-align: center;
-margin-bottom: 40px;
-animation: fadeInDown 0.8s ease;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 20px;
-}
-.logo-section {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 20px;
-}
-.logo-container {
-width: 80px;
-height: 80px;
-display: flex;
-align-items: center;
-justify-content: center;
-background: white;
-border-radius: 12px;
-box-shadow: 0 4px 15px rgba(0, 146, 69, 0.1);
-overflow: hidden;
-}
-.logo-container img {
-max-width: 100%;
-max-height: 100%;
-object-fit: contain;
-}
-.header-text h1 {
-color: var(--dark-green);
-font-size: 2.5rem;
-font-weight: 700;
-margin: 0;
-letter-spacing: -0.5px;
-}
-.subtitle {
-color: #666;
-font-size: 1.1rem;
-margin: 0;
-}
-.grid-container {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 20px;
-max-width: 1000px;
-width: 100%;
-animation: fadeInUp 0.8s ease;
-}
-.card {
-background-color: var(--card-bg);
-border-radius: 12px;
-padding: 25px;
-text-decoration: none;
-color: var(--text-color);
-box-shadow: var(--shadow);
-transition: all 0.3s ease;
-border-left: 5px solid transparent;
-display: flex;
-align-items: center;
-position: relative;
-overflow: hidden;
-}
-.card:hover {
-transform: translateY(-5px);
-box-shadow: var(--shadow-hover);
-border-left: 5px solid var(--primary-green);
-}
-.card-icon {
-font-size: 2rem;
-margin-right: 20px;
-background: #eef7ed;
-width: 60px;
-height: 60px;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 50%;
-color: var(--dark-green);
-transition: background 0.3s;
-}
-.card:hover .card-icon {
-background: var(--primary-green);
-color: white;
-}
-.card-content h3 {
-font-size: 1.2rem;
-margin-bottom: 5px;
-color: var(--dark-green);
-}
-.card-content span {
-font-size: 0.9rem;
-color: #888;
-}
-/* Section Titles */
-.section-title {
-width: 100%;
-max-width: 1000px;
-margin: 30px 0 15px;
-font-size: 1.1rem;
-color: #999;
-text-transform: uppercase;
-letter-spacing: 1px;
-font-weight: 500;
-border-bottom: 1px solid #e0e0e0;
-padding-bottom: 10px;
-}
-footer {
-margin-top: 60px;
-font-size: 0.9rem;
-color: #aaa;
-}
-/* Animations */
-@keyframes fadeInDown {
-from { opacity: 0; transform: translateY(-20px); }
-to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeInUp {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
-/* Responsive adjustment */
-@media (max-width: 600px) {
-.header-text h1 { font-size: 2rem; }
-.grid-container { grid-template-columns: 1fr; }
-.logo-section {
-flex-direction: column;
-gap: 15px;
-}
-.logo-container {
-width: 70px;
-height: 70px;
-}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аптечная сеть "Алоэ" | Панель управления</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #8DC63F;
+            --dark-green: #009245;
+            --bg-color: #f4f9f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 146, 69, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 146, 69, 0.2);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 146, 69, 0.1);
+            overflow: hidden;
+        }
+        .logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .header-text h1 {
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease;
+        }
+        /* Style for 2x2 grid */
+        .grid-container.grid-analytics {
+             grid-template-columns: repeat(2, 1fr);
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-left: 5px solid var(--primary-green);
+        }
+        .card-icon {
+            font-size: 2rem;
+            margin-right: 20px;
+            background: #eef7ed;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--dark-green);
+            transition: background 0.3s;
+        }
+        .card:hover .card-icon {
+            background: var(--primary-green);
+            color: white;
+        }
+        .card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--dark-green);
+        }
+        .card-content span {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        /* Section Titles */
+        .section-title {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px 0 15px;
+            font-size: 1.1rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        footer {
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsive adjustment */
+        @media (max-width: 600px) {
+            .header-text h1 { font-size: 2rem; }
+            .grid-container { grid-template-columns: 1fr; }
+            .logo-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .logo-container {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-<div class="logo-section">
-<div class="logo-container">
-<img src="https://aloeapteka.ru/local/templates/aloe/favicon-600.png" alt="Логотип Aloea">
-</div>
-<div class="header-text">
-<h1>Аптечная сеть «Алоэ»</h1>
-<p class="subtitle">Портал развития и аналитики</p>
-</div>
-</div>
-</header>
-<div class="section-title">Развитие сети</div>
-<div class="grid-container">
-<!-- Ссылка 1: Открытие аптек -->
-<a href="https://snklukin-commits.github.io/razvivalshik/%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%B8%D0%B5%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA.html" class="card">
-<div class="card-icon">🏥</div>
-<div class="card-content">
-<h3>Открытие аптек</h3>
-<span>Запуск новых точек</span>
-</div>
-</a>
-<!-- Ссылка 2: Поиск помещений -->
-<a href="https://snklukin-commits.github.io/razvivalshik/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA%20%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B9.html" class="card">
-<div class="card-icon">🗺️</div>
-<div class="card-content">
-<h3>Поиск помещений</h3>
-<span>Карта и локации</span>
-</div>
-</a>
-</div>
-<div class="section-title">Аналитика и Учет</div>
-<div class="grid-container">
-<!-- Ссылка 3: KPI аптек -->
-<a href="https://snklukin-commits.github.io/aloea/%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D0%B8%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA.html" class="card">
-<div class="card-icon">📊</div>
-<div class="card-content">
-<h3>KPI аптек</h3>
-<span>Ключевые показатели эффективности</span>
-</div>
-</a>
-<!-- Ссылка 4: Контроль складов -->
-<a href="https://snklukin-commits.github.io/aloea/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8C%20%D0%B0%D0%BF%D1%82%D0%B5%D1%87%D0%BD%D1%8B%D1%85%20%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BE%D0%B2.html" class="card">
-<div class="card-icon">📦</div>
-<div class="card-content">
-<h3>Контроль складов</h3>
-<span>Управление запасами</span>
-</div>
-</a>
-<!-- Ссылка 5: Остатки -->
-<a href="https://snklukin-commits.github.io/aloea/%D0%9E%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%B8%20%D0%BF%D0%BE%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA%D0%B0%D0%BC.html" class="card">
-<div class="card-icon">💊</div>
-<div class="card-content">
-<h3>Остатки по аптекам</h3>
-<span>Текущее наличие товара</span>
-</div>
-</a>
-</div>
-<div class="section-title">Инструменты</div>
-<div class="grid-container">
-<!-- Ссылка 6: Генератор этикеток -->
-<a href="https://snklukin-commits.github.io/aloea/%D0%93%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%82%D0%BE%D1%80%20%D1%8D%D1%82%D0%B8%D0%BA%D0%B5%D1%82%D0%BE%D0%BA.html" class="card">
-<div class="card-icon">🏷️</div>
-<div class="card-content">
-<h3>Генератор этикеток</h3>
-<span>Создание этикеток для товаров</span>
-</div>
-</a>
-<!-- Ссылка 7: Акции СТМ -->
-<a href="https://snklukin-commits.github.io/aloea/%D0%90%D0%BA%D1%86%D0%B8%D0%B8%20%D0%A1%D0%A2%D0%9C" class="card">
-<div class="card-icon">🎯</div>
-<div class="card-content">
-<h3>Акции СТМ</h3>
-<span>Управление акциями</span>
-</div>
-</a>
-</div>
-<footer>
-&copy; 2025 Аптечная сеть «Алоэ». Внутренний портал.
-</footer>
+    <header>
+        <div class="logo-section">
+            <div class="logo-container">
+                <img src="https://aloeapteka.ru/local/templates/aloe/favicon-600.png" alt="Логотип Aloea">
+            </div>
+            <div class="header-text">
+                <h1>Аптечная сеть «Алоэ»</h1>
+                <p class="subtitle">Портал развития и аналитики</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="section-title">Развитие сети</div>
+    <div class="grid-container">
+        <!-- Ссылка 1: Открытие аптек -->
+        <a href="https://snklukin-commits.github.io/razvivalshik/%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%B8%D0%B5%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA.html" class="card">
+            <div class="card-icon">🏥</div>
+            <div class="card-content">
+                <h3>Открытие аптек</h3>
+                <span>Запуск новых точек</span>
+            </div>
+        </a>
+        <!-- Ссылка 2: Поиск помещений -->
+        <a href="https://snklukin-commits.github.io/razvivalshik/%D0%9F%D0%BE%D0%B8%D1%81%D0%BA%20%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B9.html" class="card">
+            <div class="card-icon">🗺️</div>
+            <div class="card-content">
+                <h3>Поиск помещений</h3>
+                <span>Карта и локации</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="section-title">Аналитика и Учет</div>
+    <div class="grid-container grid-analytics">
+        <!-- Ссылка 3: KPI аптек -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D0%B8%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA.html" class="card">
+            <div class="card-icon">📊</div>
+            <div class="card-content">
+                <h3>KPI аптек</h3>
+                <span>Ключевые показатели эффективности</span>
+            </div>
+        </a>
+        <!-- НОВАЯ ССЫЛКА: Продажи по аптекам -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%9F%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B8%20%D0%BF%D0%BE%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA%D0%B0%D0%BC.html" class="card">
+            <div class="card-icon">📈</div>
+            <div class="card-content">
+                <h3>Продажи по аптекам</h3>
+                <span>Анализ выручки и чеков</span>
+            </div>
+        </a>
+        <!-- Ссылка 4: Контроль складов -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%9A%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8C%20%D0%B0%D0%BF%D1%82%D0%B5%D1%87%D0%BD%D1%8B%D1%85%20%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BE%D0%B2.html" class="card">
+            <div class="card-icon">📦</div>
+            <div class="card-content">
+                <h3>Контроль складов</h3>
+                <span>Управление запасами</span>
+            </div>
+        </a>
+        <!-- Ссылка 5: Остатки -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%9E%D1%81%D1%82%D0%B0%D1%82%D0%BA%D0%B8%20%D0%BF%D0%BE%20%D0%B0%D0%BF%D1%82%D0%B5%D0%BA%D0%B0%D0%BC.html" class="card">
+            <div class="card-icon">💊</div>
+            <div class="card-content">
+                <h3>Остатки по аптекам</h3>
+                <span>Текущее наличие товара</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="section-title">Инструменты</div>
+    <div class="grid-container">
+        <!-- Ссылка 6: Генератор этикеток -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%93%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%82%D0%BE%D1%80%20%D1%8D%D1%82%D0%B8%D0%BA%D0%B5%D1%82%D0%BE%D0%BA.html" class="card">
+            <div class="card-icon">🏷️</div>
+            <div class="card-content">
+                <h3>Генератор этикеток</h3>
+                <span>Создание этикеток для товаров</span>
+            </div>
+        </a>
+        <!-- Ссылка 7: Акции СТМ -->
+        <a href="https://snklukin-commits.github.io/aloea/%D0%90%D0%BA%D1%86%D0%B8%D0%B8%20%D0%A1%D0%A2%D0%9C" class="card">
+            <div class="card-icon">🎯</div>
+            <div class="card-content">
+                <h3>Акции СТМ</h3>
+                <span>Управление акциями</span>
+            </div>
+        </a>
+    </div>
+
+    <footer>
+        &copy; 2025 Аптечная сеть «Алоэ». Внутренний портал.
+    </footer>
 </body>
 </html>
