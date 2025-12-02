@@ -82,7 +82,7 @@
             width: 100%;
             animation: fadeInUp 0.8s ease;
         }
-        /* Style for 2x2 grid */
+        /* Style for 2x2 grid on desktop */
         .grid-container.grid-analytics {
              grid-template-columns: repeat(2, 1fr);
         }
@@ -162,6 +162,7 @@
         @media (max-width: 600px) {
             .header-text h1 { font-size: 2rem; }
             .grid-container { grid-template-columns: 1fr; }
+            .grid-container.grid-analytics { grid-template-columns: 1fr; }
             .logo-section {
                 flex-direction: column;
                 gap: 15px;
